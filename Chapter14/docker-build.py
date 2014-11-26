@@ -1,0 +1,19 @@
+import docker
+import io
+
+script = io.StringIO(u'\n'.join([
+  'FROM ubuntu:14.04',
+  'MAINTAINER Foo Bar <foo@bar.com>',
+  'RUN apt-get update',
+  'RUN apt-get install -y nginx',
+  'RUN echo "\\ndaemon off;" >> /etc/nginx/nginx.conf',
+  'RUN chown -R www-data:www-data /var/lib/nginx',
+  'VOLUME ["/data", "/etc/nginx/site-enabled", "/var/log/nginx"]',
+  'WORKDIR /etc/nginx',
+  'CMD ["nginx"]',
+  'EXPOSE 80',
+  'EXPOSE 443'
+]))
+
+c = docker.Client(base_url='unix://var/run/docker.sock')
+c.build(tag='hello:0.1', quiet=True, fileobj=script, rm=True)

@@ -1,0 +1,13 @@
+[Unit]
+Description=Hello Nginx Service
+Requires=docker.service
+After=docker.service
+
+[Service]
+ExecStartPre=-/usr/bin/docker kill hello-nginx
+ExecStartPre=-/usr/bin/docker rm hello-nginx
+ExecStart=/usr/bin/docker run --name hello-nginx -p 80:80 nginx:latest
+ExecStop=/usr/bin/docker stop hello-nginx
+
+[X-Fleet]
+MachineMetadata="region=ap-northeast-1" "provider=amazon"

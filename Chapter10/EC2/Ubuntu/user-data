@@ -1,0 +1,9 @@
+#cloud-config
+
+packages:
+ - curl
+
+runcmd:
+ - [ sh, -c, "curl https://get.docker.com/ | sh" ]
+ - [ sh, -c, "usermod -aG docker ubuntu" ]
+

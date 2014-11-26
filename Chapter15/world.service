@@ -1,0 +1,13 @@
+[Unit]
+Description=World Service
+Requires=docker.service
+After=docker.service
+
+[Service]
+ExecStartPre=-/usr/bin/docker kill world
+ExecStartPre=-/usr/bin/docker rm world
+ExecStart=/usr/bin/docker run --name world busybox /bin/sh -c "while true; do echo Hello World; sleep 1; done"
+ExecStop=/usr/bin/docker stop world
+
+[X-Fleet]
+MachineOf=hello.service

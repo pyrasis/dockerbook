@@ -1,0 +1,8 @@
+#cloud-config
+
+users:
+- name: exampleuser
+  ssh-authorized-keys: ssh-rsa <SSH 공개 키>
+  groups:
+    - sudo
+    - docker

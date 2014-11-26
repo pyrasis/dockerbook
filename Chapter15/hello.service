@@ -1,0 +1,13 @@
+[Unit]
+Description=Hello Service
+Requires=docker.service
+After=docker.service
+
+[Service]
+ExecStartPre=-/usr/bin/docker kill hello
+ExecStartPre=-/usr/bin/docker rm hello
+ExecStart=/usr/bin/docker run --name hello busybox /bin/sh -c "while true; do echo Hello World; sleep 1; done"
+ExecStop=/usr/bin/docker stop hello
+
+[X-Fleet]
+MachineID=6960c4ce6f6b44518687a32d5e39dec9

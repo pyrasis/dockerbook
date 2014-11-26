@@ -1,0 +1,8 @@
+#cloud-config
+
+users:
+- name: exampleuser
+  passwd: <비밀번호 해쉬 값>
+  groups:
+    - sudo
+    - docker

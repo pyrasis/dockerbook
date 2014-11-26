@@ -1,0 +1,8 @@
+#cloud-config
+
+users:
+- name: exampleuser
+  coreos-ssh-import-github: <GitHub 계정>
+  groups:
+    - sudo
+    - docker

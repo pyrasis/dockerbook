@@ -1,0 +1,17 @@
+{
+  "apiVersion": "v1beta1",
+  "kind": "Pod",
+  "id": "nginx-pod",
+  "desiredState": {
+    "manifest": {
+      "version": "v1beta1",
+      "id": "nginx-pod",
+      "containers": [{
+        "name": "hello-nginx",
+        "image": "nginx",
+        "ports": [{ "hostPort": 80, "containerPort": 80 }]
+      }]
+    }
+  },
+  "labels": { "name": "hello-nginx" }
+}

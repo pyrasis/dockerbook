@@ -1,0 +1,13 @@
+[Unit]
+Description=DB Service
+Requires=docker.service
+After=docker.service
+
+[Service]
+ExecStartPre=-/usr/bin/docker kill db
+ExecStartPre=-/usr/bin/docker rm db
+ExecStart=/usr/bin/docker run --name db -p 27017:27017 mongo:latest
+ExecStop=/usr/bin/docker stop db
+
+[X-Fleet]
+Conflicts=web.*.service

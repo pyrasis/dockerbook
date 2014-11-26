@@ -1,0 +1,9 @@
+#cloud-config
+
+packages:
+ - docker
+
+runcmd:
+ - [ sh, -c, "usermod -aG docker ec2-user" ]
+ - service docker start
+

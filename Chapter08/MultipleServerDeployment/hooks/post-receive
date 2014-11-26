@@ -1,0 +1,28 @@
+#!/bin/bash
+
+APP_NAME=exampleapp
+APP_DIR=$HOME/$APP_NAME
+REVISION=$(expr substr $(git rev-parse --verify HEAD) 1 7)
+
+REGISTRY=192.168.0.40:5000
+APP_SERVERS=(
+  "pyrasis@192.168.0.101"
+  "pyrasis@192.168.0.102"
+)
+
+GIT_WORK_TREE=$APP_DIR git checkout -f
+
+cd $APP_DIR
+docker build --tag $APP_NAME:$REVISION .
+docker tag $APP_NAME:$REVISION $REGISTRY/$APP_NAME:$REVISION
+docker push $REGISTRY/$APP_NAME:$REVISION
+
+SSH="ssh -o StrictHostKeyChecking=no"
+for SERVER in ${APP_SERVERS[@]}
+do
+  $SSH $SERVER docker pull $REGISTRY/$APP_NAME:$REVISION
+  $SSH $SERVER docker stop $APP_NAME
+  $SSH $SERVER docker rm $APP_NAME
+  $SSH $SERVER docker run -d --name $APP_NAME \
+    -p 80:80 $REGISTRY/$APP_NAME:$REVISION
+done

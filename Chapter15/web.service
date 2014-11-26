@@ -1,0 +1,10 @@
+[Unit]
+Description=Web Service
+Requires=docker.service
+After=docker.service
+
+[Service]
+ExecStartPre=-/usr/bin/docker kill web
+ExecStartPre=-/usr/bin/docker rm web
+ExecStart=/usr/bin/docker run --name web -p 80:80 nginx:latest
+ExecStop=/usr/bin/docker stop web

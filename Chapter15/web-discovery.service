@@ -1,0 +1,18 @@
+[Unit]
+Description=Announce Web
+BindsTo=web.service
+
+[Service]
+EnvironmentFile=/etc/environment
+ExecStart=/bin/sh -c \
+  "while true; \
+   do \
+     etcdctl set /services/web/nginx \
+       '{ \"host\": \"${COREOS_PUBLIC_IPV4}\", \"port\": 80 }' \
+       --ttl 60; \
+     sleep 45; \
+   done"
+ExecStop=/usr/bin/etcdctl rm /services/web/nginx
+
+[X-Fleet]
+MachineOf=web.service
